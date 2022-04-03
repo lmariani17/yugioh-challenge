@@ -13,19 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('card', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description');
             $table->boolean('first_edition');
             $table->string('serial_code');
             $table->enum('type', ['Monster', 'Magic', 'Trap']);
-            $table->foreignId('subtype_id');
             $table->integer('attack');
             $table->integer('defense');
             $table->integer('star')->nullable();
             $table->unsignedDecimal('amount', $precision = 8, $scale = 2);
-            $table->mediumText('image');
+            $table->foreignId('subtype_id');
+            $table->foreignId('image_id');
             $table->timestamps();
             $table->softDeletes($column = 'deleted_at', $precision = 0);
         });
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('card');
+        Schema::dropIfExists('cards');
     }
 };
