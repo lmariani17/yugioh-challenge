@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubtypeController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(SubtypeController::class)->group(function () {
     Route::get('/subtypes', 'index');
     Route::get('/subtypes/{id}', 'show');
+});
+
+Route::controller(ImageController::class)->group(function () {
+    Route::get('/images', 'index');
+    Route::get('/images/{id}', 'show');
 });
