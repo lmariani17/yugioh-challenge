@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
+use App\Http\Resources\CardResource;
 use App\Models\Card;
 
 class CardController extends Controller
@@ -26,7 +27,11 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request)
     {
-        //
+        $request->validate($request->rules());
+    
+        $cardCreated = Card::create($request->toArray());
+
+        $response = new CardResource($cardCreated);
     }
 
     /**
@@ -47,9 +52,13 @@ class CardController extends Controller
      * @param  \App\Models\Card  $card
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCardRequest $request, Card $card)
+    public function update(UpdateCardRequest $request, int $id)
     {
-        //
+        $request->validate($request->rules());
+        Card::findOrFail($id)->update($request->toArray());
+        $cardUpdated = Card::find($id);
+
+        $response = new CardResource($cardUpdated);
     }
 
     /**

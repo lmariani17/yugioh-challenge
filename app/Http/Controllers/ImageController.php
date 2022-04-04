@@ -54,7 +54,7 @@ class ImageController extends Controller
      */
     public function update(UpdateImageRequest $request, int $id)
     {
-        //$request->validate($request->rules());
+        //$request->validate($request->rules()); COMPLETAR VALIDACIÓN
         Image::findOrFail($id)->update($request->toArray());
         $imageUpdated = Image::find($id);
 

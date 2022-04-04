@@ -24,8 +24,8 @@ class CardResource extends JsonResource
             'defense' => $this->defense,
             'star' => $this->star,
             'amount' => $this->amount,
-            'subtype' => $this->subtype,
-            'image' => $this->image,
+            'subtype' => new SubtypeResource($this->subtype),
+            'image' => new ImageResource($this->image),
         ];
     }
 }

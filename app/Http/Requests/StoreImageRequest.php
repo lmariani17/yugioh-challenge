@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AlphaSpace;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreImageRequest extends FormRequest
@@ -24,9 +25,9 @@ class StoreImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'extension' => 'required',
-            'file' => 'required',
+            'name' => ['required', new AlphaSpace],
+            'extension' => ['required'],
+            'file' => ['required'],
         ];
     }
 }

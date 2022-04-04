@@ -24,7 +24,7 @@ class UpdateImageRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => [new AlphaSpace],
         ];
     }
 }

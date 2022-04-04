@@ -20,12 +20,12 @@ return new class extends Migration
             $table->boolean('first_edition');
             $table->string('serial_code');
             $table->enum('type', ['Monster', 'Magic', 'Trap']);
-            $table->integer('attack');
-            $table->integer('defense');
+            $table->integer('attack')->nullable();
+            $table->integer('defense')->nullable();
             $table->integer('star')->nullable();
             $table->unsignedDecimal('amount', $precision = 8, $scale = 2);
-            $table->foreignId('subtype_id');
-            $table->foreignId('image_id');
+            $table->foreignId('subtype_id')->constrained();
+            $table->foreignId('image_id')->constrained();
             $table->timestamps();
             $table->softDeletes($column = 'deleted_at', $precision = 0);
         });

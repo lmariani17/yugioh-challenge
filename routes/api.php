@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'index');
     Route::get('/cards/{id}', 'show');
+    Route::post('/cards', 'store');
+    Route::patch('/cards/{id}', 'store');
 });
 
 Route::controller(ImageController::class)->group(function () {
