@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreImagesRequest;
-use App\Http\Requests\UpdateImagesRequest;
-use App\Models\Images;
+use App\Http\Requests\StoreImageRequest;
+use App\Http\Requests\UpdateImageRequest;
+use App\Models\Image;
 use App\Http\Resources\ImageResource;
+use Validator;
 
 class ImageController extends Controller
 {
@@ -22,12 +23,15 @@ class ImageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreImagesRequest  $request
+     * @param  \App\Http\Requests\StoreImageRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreImagesRequest $request)
+    public function store(StoreImageRequest $request)
     {
-        //
+        $request->validate($request->rules());
+        $imageCreated = Image::create($request->toArray());
+
+        return new ImageResource($imageCreated);
     }
 
     /**
@@ -44,13 +48,17 @@ class ImageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateImagesRequest  $request
+     * @param  \App\Http\Requests\UpdateImageRequest  $request
      * @param  \App\Models\Images  $images
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateImagesRequest $request, Images $images)
+    public function update(UpdateImageRequest $request, int $id)
     {
-        //
+        //$request->validate($request->rules());
+        Image::findOrFail($id)->update($request->toArray());
+        $imageUpdated = Image::find($id);
+
+        return new ImageResource($imageUpdated);
     }
 
     /**

@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SubtypeController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SubtypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(SubtypeController::class)->group(function () {
-    Route::get('/subtypes', 'index');
-    Route::get('/subtypes/{id}', 'show');
+Route::controller(CardController::class)->group(function () {
+    Route::get('/cards', 'index');
+    Route::get('/cards/{id}', 'show');
 });
 
 Route::controller(ImageController::class)->group(function () {
     Route::get('/images', 'index');
     Route::get('/images/{id}', 'show');
+    Route::post('/images', 'store');
+    Route::patch('/images/{id}', 'update');
+});
+
+Route::controller(SubtypeController::class)->group(function () {
+    Route::get('/subtypes', 'index');
+    Route::get('/subtypes/{id}', 'show');
 });
