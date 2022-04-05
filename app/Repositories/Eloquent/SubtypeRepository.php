@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Repository\Eloquent;
+namespace App\Repositories\Eloquent;
 
-use App\Models\Card;
-use App\Repository\CardRepositoryInterface;
+use App\Models\Subtype;
+use App\Repositories\SubtypeRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
-class CardRepository implements CardRepositoryInterface
+class SubtypeRepository implements SubtypeRepositoryInterface
 {
     /**
-     * @var Card
+     * @var Subtype
      */
-    protected Card $model;
+    protected Subtype $model;
 
     /**
-     * CardRepository constructor.
+     * SubtypeRepository constructor.
      *
-     * @param Card $model
+     * @param Subtype $model
      */
-    public function __construct(Card $model)
+    public function __construct(Subtype $model)
     {
         $this->model = $model;
     }
@@ -32,22 +32,22 @@ class CardRepository implements CardRepositoryInterface
     /**
      * @param array $attributes
      *
-     * @return Card
+     * @return Subtype
      */
-    public function create(array $attributes): Card
+    public function create(array $attributes): Subtype
     {
         return $this->model->create($attributes);
     }
 
     /**
      * @param $id
-     * @return Card|null
+     * @return Subtype|null
      * @throws ModelNotFoundException
      */
-    public function findOrFail($id): ?Card
+    public function findOrFail($id): ?Subtype
     {
         if (null == $model = $this->model->find($id)) {
-            throw new ModelNotFoundException("Card not found", 404);
+            throw new ModelNotFoundException("Subtype not found", 404);
         }
 
         return $model;
@@ -56,26 +56,17 @@ class CardRepository implements CardRepositoryInterface
     /**
      * @param array $attributes
      * @param int $id
-     * @return Card
+     * @return Subtype
      * @throws ModelNotFoundException
      */
-    public function update(array $attributes, int $id): Card
+    public function update(array $attributes, int $id): Subtype
     {
         if (null == $model = $this->model->find($id)) {
-            throw new ModelNotFoundException("Card not found", 404);
+            throw new ModelNotFoundException("Subtype not found", 404);
         }
 
         $model->update($attributes);
 
         return $model;
-    }
-
-    /**
-     * @param $id
-     * @return int
-     */
-    public function delete($id): int
-    {
-        return $this->model->destroy($id);
     }
 }

@@ -6,7 +6,7 @@ use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Http\Resources\CardResource;
 use App\Http\Resources\ErrorResource;
-use App\Repository\CardRepositoryInterface;
+use App\Repositories\CardRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

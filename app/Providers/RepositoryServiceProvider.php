@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Repository\CardRepositoryInterface;
-use App\Repository\Eloquent\CardRepository;
-use App\Repository\Eloquent\ImageRepository;
-use App\Repository\Eloquent\SubtypeRepository;
-use App\Repository\ImageRepositoryInterface;
-use App\Repository\SubtypeRepositoryInterface;
+use App\Repositories\CardRepositoryInterface;
+use App\Repositories\Eloquent\CardRepository;
+use App\Repositories\Eloquent\ImageRepository;
+use App\Repositories\Eloquent\SubtypeRepository;
+use App\Repositories\ImageRepositoryInterface;
+use App\Repositories\SubtypeRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

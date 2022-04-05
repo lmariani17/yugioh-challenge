@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository\Eloquent;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Image;
-use App\Repository\ImageRepositoryInterface;
+use App\Repositories\ImageRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 

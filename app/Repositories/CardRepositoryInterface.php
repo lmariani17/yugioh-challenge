@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repositories;
 
-use App\Models\Image;
+use App\Models\Card;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
-interface ImageRepositoryInterface
+interface CardRepositoryInterface
 {
     /**
      * @return Collection
@@ -15,23 +15,23 @@ interface ImageRepositoryInterface
 
     /**
      * @param array $attributes
-     * @return Image
+     * @return Card
      */
-    public function create(array $attributes): Image;
+    public function create(array $attributes): Card;
 
     /**
      * @param $id
-     * @return Image|null
+     * @return Card|null
      * @throws ModelNotFoundException
      */
-    public function findOrFail($id): ?Image;
+    public function findOrFail($id): ?Card;
 
     /**
      * @param array $attributes
      * @param int $id
-     * @return Image
+     * @return Card
      */
-    public function update(array $attributes, int $id): Image;
+    public function update(array $attributes, int $id): Card;
 
     /**
      * @param $id

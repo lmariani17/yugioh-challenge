@@ -6,7 +6,7 @@ use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SubtypeResource;
 use App\Http\Requests\StoreSubtypeRequest;
 use App\Http\Requests\UpdateSubtypeRequest;
-use App\Repository\SubtypeRepositoryInterface;
+use App\Repositories\SubtypeRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

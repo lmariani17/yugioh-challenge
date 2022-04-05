@@ -6,7 +6,7 @@ use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ImageResource;
-use App\Repository\ImageRepositoryInterface;
+use App\Repositories\ImageRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
