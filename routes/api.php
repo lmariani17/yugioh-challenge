@@ -38,4 +38,6 @@ Route::controller(ImageController::class)->group(function () {
 Route::controller(SubtypeController::class)->group(function () {
     Route::get('/subtypes', 'index');
     Route::get('/subtypes/{id}', 'show');
+    Route::post('/subtypes', 'store');
+    Route::put('/subtypes/{id}', 'update');
 });

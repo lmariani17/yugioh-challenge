@@ -15,4 +15,11 @@ class Subtype extends Model
      * @var string
      */
     protected $table = 'subtypes';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name'];
 }

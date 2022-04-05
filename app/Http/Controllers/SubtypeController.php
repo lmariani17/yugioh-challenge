@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ErrorResource;
+use App\Http\Resources\SubtypeResource;
 use App\Http\Requests\StoreSubtypeRequest;
 use App\Http\Requests\UpdateSubtypeRequest;
 use App\Models\Subtype;
-use App\Http\Resources\SubtypeResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Validation\ValidationException;
 
 class SubtypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return SubtypeResource::collection(Subtype::all());
     }
@@ -22,35 +27,61 @@ class SubtypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSubtypeRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreSubtypeRequest $request
+     * @return SubtypeResource
      */
-    public function store(StoreSubtypeRequest $request)
+    public function store(StoreSubtypeRequest $request): ErrorResource|SubtypeResource
     {
-        //
+        try {
+            $request->validate($request->rules());
+            $subtypeCreated = Subtype::create($request->toArray());
+            $response =  new SubtypeResource($subtypeCreated);
+        } catch (Exception $exception) {
+            $response = new ErrorResource($exception);
+        }
+
+        return $response;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Subtype  $subtype
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return ErrorResource|SubtypeResource
      */
-    public function show(int $id)
+    public function show(int $id): ErrorResource|SubtypeResource
     {
-        return new SubtypeResource(Subtype::findOrFail($id));
+        try {
+            $response =  new SubtypeResource(Subtype::findOrFail($id));
+        } catch (ModelNotFoundException $notFoundException) {
+            $response = new ErrorResource($notFoundException);
+        } catch (Exception $exception) {
+            $response = new ErrorResource($exception);
+        }
+
+        return $response;
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSubtypeRequest  $request
-     * @param  \App\Models\Subtype  $subtype
-     * @return \Illuminate\Http\Response
+     * @param UpdateSubtypeRequest $request
+     * @param int $id
+     * @return ErrorResource|SubtypeResource
      */
-    public function update(UpdateSubtypeRequest $request, Subtype $subtype)
+    public function update(UpdateSubtypeRequest $request, int $id): ErrorResource|SubtypeResource
     {
-        //
+        try {
+            $request->validate($request->rules());
+            Subtype::findOrFail($id)->update($request->toArray());
+            $response =  new SubtypeResource(Subtype::find($id));
+        } catch (ModelNotFoundException $notFoundException) {
+            $response = new ErrorResource($notFoundException);
+        } catch (Exception $exception) {
+            $response = new ErrorResource($exception);
+        }
+
+        return $response;
     }
 
     /**
