@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BadRequestResource;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SubtypeResource;
-use App\Http\Requests\StoreSubtypeRequest;
-use App\Http\Requests\UpdateSubtypeRequest;
 use App\Repositories\SubtypeRepositoryInterface;
+use App\Rules\AlphaSpace;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\Response;
 
 class SubtypeController extends Controller
 {
@@ -33,14 +37,23 @@ class SubtypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreSubtypeRequest $request
-     * @return SubtypeResource
+     * @param Request $request
+     * @return SubtypeResource|BadRequestException|ErrorResource
      */
-    public function store(StoreSubtypeRequest $request): ErrorResource|SubtypeResource
+    public function store(Request $request): SubtypeResource|BadRequestException|ErrorResource
     {
         try {
-            $request->validate($request->rules());
-            $response =  new SubtypeResource($this->repository->create($request->toArray()));
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', new AlphaSpace],
+            ]);
+
+            if ($validator->fails()) {
+                throw new BadRequestException($validator->errors(), Response::HTTP_BAD_REQUEST);
+            }
+
+            $response =  new SubtypeResource($this->repository->create($request->all()));
+        } catch (BadRequestException $badRequestException) {
+            $response = new BadRequestResource($badRequestException);
         } catch (Exception $exception) {
             $response = new ErrorResource($exception);
         }
@@ -70,15 +83,24 @@ class SubtypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateSubtypeRequest $request
+     * @param Request $request
      * @param int $id
-     * @return ErrorResource|SubtypeResource
+     * @return SubtypeResource|BadRequestException|ErrorResource
      */
-    public function update(UpdateSubtypeRequest $request, int $id): ErrorResource|SubtypeResource
+    public function update(Request $request, int $id): SubtypeResource|BadRequestException|ErrorResource
     {
         try {
-            $request->validate($request->rules());
-            $response = new SubtypeResource($this->repository->update($request->toArray(), $id));
+            $validator = Validator::make($request->all(), [
+                'name' => [new AlphaSpace],
+            ]);
+
+            if ($validator->fails()) {
+                throw new BadRequestException($validator->errors(), Response::HTTP_BAD_REQUEST);
+            }
+
+            $response = new SubtypeResource($this->repository->update($request->all(), $id));
+        } catch (BadRequestException $badRequestException) {
+            $response = new BadRequestResource($badRequestException);
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
