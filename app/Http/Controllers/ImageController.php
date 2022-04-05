@@ -5,14 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Resources\ErrorResource;
-use App\Models\Image;
 use App\Http\Resources\ImageResource;
+use App\Repository\ImageRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ImageController extends Controller
 {
+    private ImageRepositoryInterface $repository;
+
+    public function __construct(ImageRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +28,7 @@ class ImageController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return ImageResource::collection(Image::all());
+        return ImageResource::collection($this->repository->all());
     }
 
     /**
@@ -33,8 +41,7 @@ class ImageController extends Controller
     {
         try {
             $request->validate($request->rules());
-            $imageCreated = Image::create($request->toArray());
-            $response = new ImageResource($imageCreated);
+            $response = new ImageResource($this->repository->create($request->toArray()));
         } catch (Exception $exception) {
             $response = new ErrorResource($exception);
         }
@@ -51,7 +58,7 @@ class ImageController extends Controller
     public function show(int $id): ErrorResource|ImageResource
     {
         try {
-            $response = new ImageResource(Image::findOrFail($id));
+            $response = new ImageResource($this->repository->findOrFail($id));
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
@@ -72,9 +79,7 @@ class ImageController extends Controller
     {
         try {
             $request->validate($request->rules());
-            Image::findOrFail($id)->update($request->toArray());
-            $imageUpdated = Image::find($id);
-            $response = new ImageResource($imageUpdated);
+            $response = new ImageResource($this->repository->update($request->toArray(), $id));
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
@@ -88,10 +93,16 @@ class ImageController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return ErrorResource|JsonResource
      */
-    public function destroy(int $id): \Illuminate\Http\Response
+    public function destroy(int $id)
     {
-        //
+        try {
+            $response = JsonResource::make($this->repository->delete($id));
+        } catch (Exception $exception) {
+            $response = new ErrorResource($exception);
+        }
+
+        return $response;
     }
 }

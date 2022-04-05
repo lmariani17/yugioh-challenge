@@ -6,14 +6,20 @@ use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SubtypeResource;
 use App\Http\Requests\StoreSubtypeRequest;
 use App\Http\Requests\UpdateSubtypeRequest;
-use App\Models\Subtype;
+use App\Repository\SubtypeRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Validation\ValidationException;
 
 class SubtypeController extends Controller
 {
+    private SubtypeRepositoryInterface $repository;
+
+    public function __construct(SubtypeRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +27,7 @@ class SubtypeController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return SubtypeResource::collection(Subtype::all());
+        return SubtypeResource::collection($this->repository->all());
     }
 
     /**
@@ -34,8 +40,7 @@ class SubtypeController extends Controller
     {
         try {
             $request->validate($request->rules());
-            $subtypeCreated = Subtype::create($request->toArray());
-            $response =  new SubtypeResource($subtypeCreated);
+            $response =  new SubtypeResource($this->repository->create($request->toArray()));
         } catch (Exception $exception) {
             $response = new ErrorResource($exception);
         }
@@ -52,7 +57,7 @@ class SubtypeController extends Controller
     public function show(int $id): ErrorResource|SubtypeResource
     {
         try {
-            $response =  new SubtypeResource(Subtype::findOrFail($id));
+            $response =  new SubtypeResource($this->repository->findOrFail($id));
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
@@ -73,8 +78,7 @@ class SubtypeController extends Controller
     {
         try {
             $request->validate($request->rules());
-            Subtype::findOrFail($id)->update($request->toArray());
-            $response =  new SubtypeResource(Subtype::find($id));
+            $response = new SubtypeResource($this->repository->update($request->toArray(), $id));
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
@@ -82,16 +86,5 @@ class SubtypeController extends Controller
         }
 
         return $response;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Subtype  $subtype
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Subtype $subtype)
-    {
-        //
     }
 }

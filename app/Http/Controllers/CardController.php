@@ -6,14 +6,20 @@ use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Http\Resources\CardResource;
 use App\Http\Resources\ErrorResource;
-use App\Models\Card;
+use App\Repository\CardRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class CardController extends Controller
 {
+    private CardRepositoryInterface $repository;
+
+    public function __construct(CardRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +27,7 @@ class CardController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        return CardResource::collection(Card::all());
+        return CardResource::collection($this->repository->all());
     }
 
     /**
@@ -34,8 +40,7 @@ class CardController extends Controller
     {
         try {
             $request->validate($request->rules());
-            $cardCreated = Card::create($request->toArray());
-            $response = new CardResource($cardCreated);
+            $response = new CardResource($this->repository->create($request->toArray()));
         } catch (Exception $exception) {
             $response = new ErrorResource($exception);
         }
@@ -52,7 +57,7 @@ class CardController extends Controller
     public function show(int $id): ErrorResource|CardResource
     {
         try {
-            $response = new CardResource(Card::findOrFail($id));
+            $response = new CardResource($this->repository->findOrFail($id));
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
@@ -73,10 +78,7 @@ class CardController extends Controller
     {
         try {
             $request->validate($request->rules());
-            Card::findOrFail($id)->update($request->toArray());
-            $cardUpdated = Card::find($id);
-
-            $response = new CardResource($cardUpdated);
+            $response = new CardResource($this->repository->update($request->toArray(), $id));
         } catch (ModelNotFoundException $notFoundException) {
             $response = new ErrorResource($notFoundException);
         } catch (Exception $exception) {
@@ -89,11 +91,17 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Card $card
-     * @return Response
+     * @param int $id
+     * @return ErrorResource|JsonResource
      */
-    public function destroy(Card $card)
+    public function destroy(int $id): ErrorResource|JsonResource
     {
-        //
+        try {
+            $response = JsonResource::make($this->repository->delete($id));
+        } catch (Exception $exception) {
+            $response = new ErrorResource($exception);
+        }
+
+        return $response;
     }
 }
