@@ -92,12 +92,12 @@ class CardController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return ErrorResource|JsonResource
+     * @return ErrorResource|int
      */
-    public function destroy(int $id): ErrorResource|JsonResource
+    public function destroy(int $id): ErrorResource|int
     {
         try {
-            $response = JsonResource::make($this->repository->delete($id));
+            $response = $this->repository->delete($id);
         } catch (Exception $exception) {
             $response = new ErrorResource($exception);
         }

@@ -26,6 +26,7 @@ Route::controller(CardController::class)->group(function () {
     Route::get('/cards/{id}', 'show');
     Route::post('/cards', 'store');
     Route::patch('/cards/{id}', 'store');
+    Route::delete('/cards/{id}', 'destroy');
 });
 
 Route::controller(ImageController::class)->group(function () {
@@ -33,6 +34,7 @@ Route::controller(ImageController::class)->group(function () {
     Route::get('/images/{id}', 'show');
     Route::post('/images', 'store');
     Route::patch('/images/{id}', 'update');
+    Route::delete('/images/{id}', 'destroy');
 });
 
 Route::controller(SubtypeController::class)->group(function () {
