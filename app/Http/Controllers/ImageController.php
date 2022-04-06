@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BadRequestResource;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ImageResource;
 use App\Repositories\ImageRepositoryInterface;
@@ -11,7 +10,6 @@ use App\Rules\ImageExtension;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;
@@ -132,14 +130,14 @@ class ImageController extends Controller
      *     )
      * )
      */
-    public function show(int $id): ImageResource|ErrorResource
+    public function show(int $id): Response
     {
         try {
             $response = new ImageResource($this->repository->findOrFail($id));
         } catch (ModelNotFoundException $notFoundException) {
-            $response = new ErrorResource($notFoundException);
+            $response = Response($notFoundException, $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = new ErrorResource($exception);
+            $response = Response($exception, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;

@@ -12,6 +12,234 @@
         }
     ],
     "paths": {
+        "/api/cards": {
+            "get": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "List all cards.",
+                "operationId": "card-index",
+                "responses": {
+                    "200": {
+                        "description": "Get a cards collection"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "Create a card.",
+                "operationId": "card-store",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Card name.",
+                        "required": true
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Card description.",
+                        "required": true
+                    },
+                    {
+                        "name": "first_edition",
+                        "in": "query",
+                        "description": "Is first edition card.",
+                        "required": true
+                    },
+                    {
+                        "name": "serial_code",
+                        "in": "query",
+                        "description": "Card's serial code.",
+                        "required": true
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type of card (Monster, Magic, Trap).",
+                        "required": true
+                    },
+                    {
+                        "name": "attack",
+                        "in": "query",
+                        "description": "Points of attack."
+                    },
+                    {
+                        "name": "defense",
+                        "in": "query",
+                        "description": "Points of defense."
+                    },
+                    {
+                        "name": "star",
+                        "in": "query",
+                        "description": "Card's quality."
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Price of card.",
+                        "required": true
+                    },
+                    {
+                        "name": "subtype_id",
+                        "in": "query",
+                        "description": "Subtype of card.",
+                        "required": true
+                    },
+                    {
+                        "name": "image_id",
+                        "in": "query",
+                        "description": "Image of card.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Card created."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "Update a specific card.",
+                "operationId": "card-update",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Card's name."
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Card's description."
+                    },
+                    {
+                        "name": "first_edition",
+                        "in": "query",
+                        "description": "Is first edition card."
+                    },
+                    {
+                        "name": "serial_code",
+                        "in": "query",
+                        "description": "Card's serial code."
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type of card (Monster, Magic, Trap)."
+                    },
+                    {
+                        "name": "attack",
+                        "in": "query",
+                        "description": "Points of attack."
+                    },
+                    {
+                        "name": "defense",
+                        "in": "query",
+                        "description": "Points of defense."
+                    },
+                    {
+                        "name": "star",
+                        "in": "query",
+                        "description": "Card's quality."
+                    },
+                    {
+                        "name": "amount",
+                        "in": "query",
+                        "description": "Price of card."
+                    },
+                    {
+                        "name": "subtype_id",
+                        "in": "query",
+                        "description": "Subtype of card."
+                    },
+                    {
+                        "name": "image_id",
+                        "in": "query",
+                        "description": "Image of card."
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Card created."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/cards/{id}": {
+            "get": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "Get a specific card.",
+                "operationId": "card-show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Card ID.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Card obteined."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/card/{id}": {
+            "delete": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "Delete a card.",
+                "operationId": "card-delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Card ID.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Card deleted."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
         "/api/images": {
             "get": {
                 "tags": [
