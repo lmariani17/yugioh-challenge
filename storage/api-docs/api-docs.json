@@ -12,13 +12,162 @@
         }
     ],
     "paths": {
+        "/api/images": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "List all images.",
+                "operationId": "image-index",
+                "responses": {
+                    "200": {
+                        "description": "Get a images collection"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Create an image.",
+                "operationId": "image-store",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "File name.",
+                        "required": true
+                    },
+                    {
+                        "name": "extension",
+                        "in": "query",
+                        "description": "File extension.",
+                        "required": true
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "Base 64 code.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Image created."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/image/{id}": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Get a specific image.",
+                "operationId": "image-show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Image ID.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image obteined."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Delete an image.",
+                "operationId": "image-delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Image ID.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image deleted."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/images/{id}": {
+            "patch": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Create an image.",
+                "operationId": "image-update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Image ID.",
+                        "required": true
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "File name."
+                    },
+                    {
+                        "name": "extension",
+                        "in": "query",
+                        "description": "File extension."
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "Base 64 code."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image updated."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
         "/api/subtypes": {
             "get": {
                 "tags": [
                     "Subtypes"
                 ],
                 "summary": "List all subtypes.",
-                "operationId": "index",
+                "operationId": "subtype-index",
                 "responses": {
                     "200": {
                         "description": "Get a subtypes collection"
@@ -30,7 +179,7 @@
                     "Subtypes"
                 ],
                 "summary": "Create a subtype.",
-                "operationId": "store",
+                "operationId": "subtype-store",
                 "parameters": [
                     {
                         "name": "name",
@@ -40,7 +189,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Subtype created."
                     },
                     "400": {
@@ -58,7 +207,7 @@
                     "Subtypes"
                 ],
                 "summary": "Get a specific subtype.",
-                "operationId": "show",
+                "operationId": "subtype-show",
                 "parameters": [
                     {
                         "name": "id",
@@ -84,7 +233,7 @@
                     "Subtypes"
                 ],
                 "summary": "Update a subtype.",
-                "operationId": "update",
+                "operationId": "subtype-update",
                 "parameters": [
                     {
                         "name": "id",

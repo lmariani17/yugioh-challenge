@@ -26,22 +26,63 @@ class ImageController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * List all images.
      *
-     * @return AnonymousResourceCollection
+     * @OA\Get(
+     *     path="/api/images",
+     *     tags={"Images"},
+     *     operationId="image-index",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Get a images collection"
+     *     )
+     * )
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): Response
     {
-        return ImageResource::collection($this->repository->all());
+        return Response(ImageResource::collection($this->repository->all()));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create an image.
      *
-     * @param Request $request
-     * @return ImageResource|BadRequestResource|ErrorResource
+     * @OA\Post(
+     *     path="/api/images",
+     *     tags={"Images"},
+     *     operationId="image-store",
+     *     @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          description="File name.",
+     *          required=true,
+     *      ),
+     *     @OA\Parameter(
+     *          name="extension",
+     *          in="query",
+     *          description="File extension.",
+     *          required=true,
+     *      ),
+     *     @OA\Parameter(
+     *          name="file",
+     *          in="query",
+     *          description="Base 64 code.",
+     *          required=true,
+     *      ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Image created."
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Bad request."
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error."
+     *     )
+     * )
      */
-    public function store(Request $request): BadRequestResource|ErrorResource|ImageResource
+    public function store(Request $request): Response
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -54,21 +95,42 @@ class ImageController extends Controller
                 throw new BadRequestException($validator->errors(), Response::HTTP_BAD_REQUEST);
             }
 
-            $response = new ImageResource($this->repository->create($request->all()));
+            $response = Response(new ImageResource($this->repository->create($request->all())), Response::HTTP_CREATED);
         } catch (BadRequestException $badRequestException) {
-            $response = new BadRequestResource($badRequestException);
+            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
         } catch (Exception $exception) {
-            $response = new ErrorResource($exception);
+            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
     }
 
     /**
-     * Display the specified resource.
+     * Get a specific image.
      *
-     * @param int $id
-     * @return ImageResource|ErrorResource
+     * @OA\Get(
+     *     path="/api/image/{id}",
+     *     tags={"Images"},
+     *     operationId="image-show",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Image ID.",
+     *          required=true
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Image obteined."
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="Not found."
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error."
+     *     )
+     * )
      */
     public function show(int $id): ImageResource|ErrorResource
     {
@@ -84,13 +146,52 @@ class ImageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Create an image.
      *
-     * @param Request $request
-     * @param int $id
-     * @return ImageResource|BadRequestResource|ErrorResource
+     * @OA\Patch(
+     *     path="/api/images/{id}",
+     *     tags={"Images"},
+     *     operationId="image-update",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Image ID.",
+     *          required=true
+     *      ),
+     *     @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          description="File name.",
+     *      ),
+     *     @OA\Parameter(
+     *          name="extension",
+     *          in="query",
+     *          description="File extension.",
+     *      ),
+     *     @OA\Parameter(
+     *          name="file",
+     *          in="query",
+     *          description="Base 64 code.",
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Image updated."
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Bad request."
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found."
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error."
+     *     )
+     * )
      */
-    public function update(Request $request, int $id): ImageResource|BadRequestResource|ErrorResource
+    public function update(Request $request, int $id): Response
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -102,30 +203,47 @@ class ImageController extends Controller
                 throw new BadRequestException($validator->errors(), Response::HTTP_BAD_REQUEST);
             }
 
-            $response = new ImageResource($this->repository->update($request->all(), $id));
+            $response = Response(new ImageResource($this->repository->update($request->all(), $id)));
         } catch (BadRequestException $badRequestException) {
-            $response = new BadRequestResource($badRequestException);
+            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
         } catch (ModelNotFoundException $notFoundException) {
-            $response = new ErrorResource($notFoundException);
+            $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = new ErrorResource($exception);
+            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete an image.
      *
-     * @param int $id
-     * @return int|ErrorResource
+     * @OA\Delete(
+     *     path="/api/image/{id}",
+     *     tags={"Images"},
+     *     operationId="image-delete",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Image ID.",
+     *          required=true
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Image deleted."
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error."
+     *     )
+     * )
      */
-    public function destroy(int $id): int|ErrorResource
+    public function destroy(int $id): Response
     {
         try {
-            $response = $this->repository->delete($id);
+            $response = Response($this->repository->delete($id));
         } catch (Exception $exception) {
-            $response = new ErrorResource($exception);
+            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;

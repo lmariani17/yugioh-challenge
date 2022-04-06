@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BadRequestResource;
-use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SubtypeResource;
 use App\Repositories\SubtypeRepositoryInterface;
 use App\Rules\AlphaSpace;
@@ -31,7 +29,7 @@ class SubtypeController extends Controller
      * @OA\Get(
      *     path="/api/subtypes",
      *     tags={"Subtypes"},
-     *     operationId="index",
+     *     operationId="subtype-index",
      *     @OA\Response(
      *         response=200,
      *         description="Get a subtypes collection"
@@ -49,7 +47,7 @@ class SubtypeController extends Controller
      * @OA\Post(
      *     path="/api/subtypes",
      *     tags={"Subtypes"},
-     *     operationId="store",
+     *     operationId="subtype-store",
      *     @OA\Parameter(
      *          name="name",
      *          in="query",
@@ -57,7 +55,7 @@ class SubtypeController extends Controller
      *          required=true,
      *      ),
      *     @OA\Response(
-     *         response=200,
+     *         response=201,
      *         description="Subtype created."
      *     ),
      *      @OA\Response(
@@ -81,12 +79,11 @@ class SubtypeController extends Controller
                 throw new BadRequestException($validator->errors(), Response::HTTP_BAD_REQUEST);
             }
 
-            $subtypeResource = new SubtypeResource($this->repository->create($request->all()));
-            $response = Response($subtypeResource);
+            $response = Response(new SubtypeResource($this->repository->create($request->all())), Response::HTTP_CREATED);
         } catch (BadRequestException $badRequestException) {
             $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), 500);
+            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -98,7 +95,7 @@ class SubtypeController extends Controller
      * @OA\Get(
      *     path="/api/subtypes/{id}",
      *     tags={"Subtypes"},
-     *     operationId="show",
+     *     operationId="subtype-show",
      *     @OA\Parameter(
      *          name="id",
      *          in="path",
@@ -126,7 +123,7 @@ class SubtypeController extends Controller
         } catch (ModelNotFoundException $notFoundException) {
             $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), 500);
+            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -138,7 +135,7 @@ class SubtypeController extends Controller
      * @OA\Put(
      *     path="/api/subtypes/{id}",
      *     tags={"Subtypes"},
-     *     operationId="update",
+     *     operationId="subtype-update",
      *     @OA\Parameter(
      *          name="id",
      *          in="path",
@@ -185,7 +182,7 @@ class SubtypeController extends Controller
         } catch (ModelNotFoundException $notFoundException) {
             $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), 500);
+            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
