@@ -1,0 +1,118 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "YU-GI-OH! Api Rest",
+        "description": "Implementation of Yu-Gi-Oh! Api Rest",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Local enviroment"
+        }
+    ],
+    "paths": {
+        "/api/subtypes": {
+            "get": {
+                "tags": [
+                    "Subtypes"
+                ],
+                "summary": "List all subtypes.",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Get a subtypes collection"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Subtypes"
+                ],
+                "summary": "Create a subtype.",
+                "operationId": "store",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Subtype name.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subtype created."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/subtypes/{id}": {
+            "get": {
+                "tags": [
+                    "Subtypes"
+                ],
+                "summary": "Get a specific subtype.",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Subtype ID.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subtype obteined."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Subtypes"
+                ],
+                "summary": "Update a subtype.",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Subtype ID.",
+                        "required": true
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "New subtype name."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subtype updated."
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        }
+    }
+}
