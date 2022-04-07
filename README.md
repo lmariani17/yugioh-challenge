@@ -1,3 +1,5 @@
+![home](https://user-images.githubusercontent.com/42821709/162286469-1a0fb1cc-c0e2-4d81-a409-c611756f7a49.jpeg)
+
 # It's Yu-Gi-Oh! time
 Welcome to the Yu-Gi-OH Rest API!
 
