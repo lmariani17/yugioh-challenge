@@ -16,7 +16,7 @@ To starting up and configure the local environment we are going to use Laravel S
 - Run the seeders for the initial state of the database -> `sail artisan db:seed`
 
 ### Endpoints to test
-Inside the root of the project you will find the following file `Insomnia-postman-collection.har`. It contains the collection of endpoints available for you to interact with the application.
+Inside the root of the project you will find the following file `Insomnia-postman-collection.har`. It contains the collection of endpoints available for you to interact with the application. Import the file with Postman or Insomnia.
 
 ### To stop the application
 When you are done testing you can stop the docker containers with the following Laravel Sail command.
@@ -24,3 +24,7 @@ When you are done testing you can stop the docker containers with the following 
 
 ## Authentication
 The authorization system to access endpoint information was developed with Laravel Sanctum. It's provides a featherweight authentication system token based APIs.
+To generate an API token:
+- Check or create a user. For this you can use the `Get users collection` or `Store user` endpoint.
+- Use the endpoint `Create API token` and copy the generated token.
+- Replace the example token with the one generated on the rest of the endpoints.
