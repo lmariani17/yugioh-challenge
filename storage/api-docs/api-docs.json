@@ -12,6 +12,51 @@
         }
     ],
     "paths": {
+        "/api/tokens/create/{id}": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Create API token.",
+                "operationId": "auth-store",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "token_name"
+                                ],
+                                "properties": {
+                                    "token_name": {
+                                        "description": "Token",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Token created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
         "/api/cards": {
             "get": {
                 "tags": [
@@ -396,7 +441,7 @@
                 }
             }
         },
-        "/api/image/{id}": {
+        "/api/images/{id}": {
             "get": {
                 "tags": [
                     "Images"
@@ -452,9 +497,7 @@
                         "description": "Internal server error."
                     }
                 }
-            }
-        },
-        "/api/images/{id}": {
+            },
             "patch": {
                 "tags": [
                     "Images"
@@ -659,10 +702,142 @@
                     }
                 }
             }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users.",
+                "operationId": "user-index",
+                "responses": {
+                    "200": {
+                        "description": "Get an user collection",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create an user.",
+                "operationId": "user-store",
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "remember_token"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "User name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "User's email",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "User's password",
+                                        "type": "string"
+                                    },
+                                    "remember_token": {
+                                        "description": "Security token",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        },
+        "/api/user/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a specific user.",
+                "operationId": "user-show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User obteined.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "AuthResource": {
+                "title": "Auth",
+                "description": "Auth",
+                "properties": {
+                    "access_token": {
+                        "description": "User's access token",
+                        "type": "string",
+                        "format": ""
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "token": "1|Ke43aqsLWBAUoylqRJ9egUEueOrl6FfogFgwhCjP"
+                }
+            },
             "CardResource": {
                 "title": "Card",
                 "description": "Card information",
@@ -734,7 +909,7 @@
                     "id": 1,
                     "name": "Dark Magician",
                     "description": "Desciption of Dark Magician",
-                    "first_edition": true,
+                    "first_edition": 1,
                     "serial_code": 190124914710293,
                     "type": "Monster",
                     "attack": 2500,
@@ -781,7 +956,7 @@
                 "type": "object",
                 "example": {
                     "id": 1,
-                    "name": "Dark Margician",
+                    "name": "Dark Magician",
                     "extension": "jpg",
                     "file": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQ"
                 }
@@ -805,6 +980,33 @@
                 "example": {
                     "id": 1,
                     "name": "Normal Monster"
+                }
+            },
+            "UserResource": {
+                "title": "User",
+                "description": "User",
+                "properties": {
+                    "id": {
+                        "description": "User's ID",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "name": {
+                        "description": "User name",
+                        "type": "string",
+                        "format": ""
+                    },
+                    "email": {
+                        "description": "User's email",
+                        "type": "email",
+                        "format": ""
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": 1,
+                    "name": "Ali Cole",
+                    "email": "tillman.edwardo@example.org"
                 }
             }
         }

@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     description="Card's image",
  *     example={
  *          "id": 1,
- *          "name": "Dark Margician",
+ *          "name": "Dark Magician",
  *          "extension": "jpg",
  *          "file": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQ",
  *     }

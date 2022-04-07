@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          "id": 1,
  *          "name": "Dark Magician",
  *          "description": "Desciption of Dark Magician",
- *          "first_edition": true,
+ *          "first_edition": 1,
  *          "serial_code": 190124914710293,
  *          "type": "Monster",
  *          "attack": 2500,

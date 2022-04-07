@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ImageResource;
 use App\Repositories\ImageRepositoryInterface;
 use App\Rules\AlphaSpace;
@@ -102,7 +101,7 @@ class ImageController extends Controller
      * Get a specific image.
      *
      * @OA\Get(
-     *     path="/api/image/{id}",
+     *     path="/api/images/{id}",
      *     tags={"Images"},
      *     operationId="image-show",
      *     @OA\Parameter(
@@ -129,7 +128,7 @@ class ImageController extends Controller
     public function show(int $id): Response
     {
         try {
-            $response = new ImageResource($this->repository->findOrFail($id));
+            $response = Response(new ImageResource($this->repository->findOrFail($id)));
         } catch (ModelNotFoundException $notFoundException) {
             $response = Response($notFoundException, $notFoundException->getCode());
         } catch (Exception $exception) {
@@ -203,7 +202,7 @@ class ImageController extends Controller
      * Delete an image.
      *
      * @OA\Delete(
-     *     path="/api/image/{id}",
+     *     path="/api/images/{id}",
      *     tags={"Images"},
      *     operationId="image-delete",
      *     @OA\Parameter(
