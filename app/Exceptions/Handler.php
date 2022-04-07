@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -38,8 +39,9 @@ class Handler extends ExceptionHandler
         $this->renderable(function (AuthenticationException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => $e->getMessage()
-                ], 401);
+                    'message' => $e->getMessage(),
+                    'code' => Response::HTTP_UNAUTHORIZED
+                ], Response::HTTP_UNAUTHORIZED);
             }
         });
     }

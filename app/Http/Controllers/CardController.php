@@ -110,9 +110,9 @@ class CardController extends Controller
 
             $response = Response(new CardResource($this->repository->create($request->all())));
         } catch (BadRequestException $badRequestException) {
-            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
+            $response = Response(new ErrorResource($badRequestException), $badRequestException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -151,9 +151,9 @@ class CardController extends Controller
         try {
             $response = Response(new CardResource($this->repository->findOrFail($id)));
         } catch (ModelNotFoundException $notFoundException) {
-            $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
+            $response = Response(new ErrorResource($notFoundException), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -233,11 +233,11 @@ class CardController extends Controller
 
             $response = Response(new CardResource($this->repository->update($request->all(), $id)));
         } catch (BadRequestException $badRequestException) {
-            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
+            $response = Response(new ErrorResource($badRequestException), $badRequestException->getCode());
         } catch (ModelNotFoundException $notFoundException) {
-            $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
+            $response = Response(new ErrorResource($notFoundException), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -271,7 +271,7 @@ class CardController extends Controller
         try {
             $response = Response($this->repository->delete($id));
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;

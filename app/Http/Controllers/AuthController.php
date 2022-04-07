@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Http\Resources\ErrorResource;
 use App\Http\Resources\AuthResource;
 use App\Repositories\UserRepositoryInterface;
 use App\Rules\AlphaSpace;
@@ -68,11 +69,11 @@ class AuthController extends Controller
             $user = $this->repository->findOrFail($request->user_id);
             $response = Response(new AuthResource($user->createToken($request->token_name)));
         } catch (BadRequestException $badRequestException) {
-            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
+            $response = Response(new ErrorResource($badRequestException), $badRequestException->getCode());
         } catch (ModelNotFoundException $notFoundException) {
-            $response = Response($notFoundException, $notFoundException->getCode());
+            $response = Response(new ErrorResource($notFoundException), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;

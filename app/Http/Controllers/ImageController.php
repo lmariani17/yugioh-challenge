@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ErrorResource;
 use App\Http\Resources\ImageResource;
 use App\Repositories\ImageRepositoryInterface;
 use App\Rules\AlphaSpace;
@@ -89,9 +90,9 @@ class ImageController extends Controller
 
             $response = Response(new ImageResource($this->repository->create($request->all())), Response::HTTP_CREATED);
         } catch (BadRequestException $badRequestException) {
-            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
+            $response = Response(new ErrorResource($badRequestException), $badRequestException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -188,11 +189,11 @@ class ImageController extends Controller
 
             $response = Response(new ImageResource($this->repository->update($request->all(), $id)));
         } catch (BadRequestException $badRequestException) {
-            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
+            $response = Response(new ErrorResource($badRequestException), $badRequestException->getCode());
         } catch (ModelNotFoundException $notFoundException) {
-            $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
+            $response = Response(new ErrorResource($notFoundException), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -226,7 +227,7 @@ class ImageController extends Controller
         try {
             $response = Response($this->repository->delete($id));
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SubtypeResource;
 use App\Repositories\SubtypeRepositoryInterface;
 use App\Rules\AlphaSpace;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Illuminate\Http\Request;
@@ -86,9 +85,9 @@ class SubtypeController extends Controller
 
             $response = Response(new SubtypeResource($this->repository->create($request->all())), Response::HTTP_CREATED);
         } catch (BadRequestException $badRequestException) {
-            $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
+            $response = Response(new ErrorResource($badRequestException), $badRequestException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -127,9 +126,9 @@ class SubtypeController extends Controller
         try {
             $response =  Response(new SubtypeResource($this->repository->findOrFail($id)));
         } catch (ModelNotFoundException $notFoundException) {
-            $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
+            $response = Response(new ErrorResource($notFoundException), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
@@ -190,9 +189,9 @@ class SubtypeController extends Controller
         } catch (BadRequestException $badRequestException) {
             $response = Response($badRequestException->getMessage(), $badRequestException->getCode());
         } catch (ModelNotFoundException $notFoundException) {
-            $response = Response($notFoundException->getMessage(), $notFoundException->getCode());
+            $response = Response(new ErrorResource($notFoundException), $notFoundException->getCode());
         } catch (Exception $exception) {
-            $response = Response($exception->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+            $response = Response(new ErrorResource($exception), Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $response;
