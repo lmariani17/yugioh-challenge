@@ -32,7 +32,8 @@ class ImageController extends Controller
      *     operationId="image-index",
      *     @OA\Response(
      *         response=200,
-     *         description="Get a images collection"
+     *         description="Get an image collection",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/ImageResource"))
      *     )
      * )
      */
@@ -48,29 +49,23 @@ class ImageController extends Controller
      *     path="/api/images",
      *     tags={"Images"},
      *     operationId="image-store",
-     *     @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="File name.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="extension",
-     *          in="query",
-     *          description="File extension.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="file",
-     *          in="query",
-     *          description="Base 64 code.",
-     *          required=true,
-     *      ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                  required={"name", "extension", "file"},
+     *                  @OA\Property(type="string", property="name", description="File name"),
+     *                  @OA\Property(type="string", property="extension", description="File extension"),
+     *                  @OA\Property(type="string", property="file", description="Base64 code")
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Image created."
+     *         description="Image created.",
+     *         @OA\JsonContent(ref="#/components/schemas/ImageResource")
      *     ),
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Bad request."
      *     ),
@@ -118,9 +113,10 @@ class ImageController extends Controller
      *      ),
      *     @OA\Response(
      *         response=200,
-     *         description="Image obteined."
+     *         description="Image obteined.",
+     *         @OA\JsonContent(ref="#/components/schemas/ImageResource")
      *     ),
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Not found."
      *     ),
@@ -150,32 +146,22 @@ class ImageController extends Controller
      *     path="/api/images/{id}",
      *     tags={"Images"},
      *     operationId="image-update",
-     *     @OA\Parameter(
-     *          name="id",
-     *          in="path",
-     *          description="Image ID.",
-     *          required=true
-     *      ),
-     *     @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="File name.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="extension",
-     *          in="query",
-     *          description="File extension.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="file",
-     *          in="query",
-     *          description="Base 64 code.",
-     *      ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                  @OA\Property(type="string", property="name", description="File name"),
+     *                  @OA\Property(type="string", property="extension", description="File extension"),
+     *                  @OA\Property(type="string", property="file", description="Base64 code")
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Image updated."
+     *         description="Image updated.",
+     *         @OA\JsonContent(ref="#/components/schemas/ImageResource")
      *     ),
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=400,
      *         description="Bad request."
      *     ),

@@ -21,7 +21,17 @@
                 "operationId": "card-index",
                 "responses": {
                     "200": {
-                        "description": "Get a cards collection"
+                        "description": "Get a cards collection",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CardResource"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -31,155 +41,105 @@
                 ],
                 "summary": "Create a card.",
                 "operationId": "card-store",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "Card name.",
-                        "required": true
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "Card description.",
-                        "required": true
-                    },
-                    {
-                        "name": "first_edition",
-                        "in": "query",
-                        "description": "Is first edition card.",
-                        "required": true
-                    },
-                    {
-                        "name": "serial_code",
-                        "in": "query",
-                        "description": "Card's serial code.",
-                        "required": true
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "description": "Type of card (Monster, Magic, Trap).",
-                        "required": true
-                    },
-                    {
-                        "name": "attack",
-                        "in": "query",
-                        "description": "Points of attack."
-                    },
-                    {
-                        "name": "defense",
-                        "in": "query",
-                        "description": "Points of defense."
-                    },
-                    {
-                        "name": "star",
-                        "in": "query",
-                        "description": "Card's quality."
-                    },
-                    {
-                        "name": "amount",
-                        "in": "query",
-                        "description": "Price of card.",
-                        "required": true
-                    },
-                    {
-                        "name": "subtype_id",
-                        "in": "query",
-                        "description": "Subtype of card.",
-                        "required": true
-                    },
-                    {
-                        "name": "image_id",
-                        "in": "query",
-                        "description": "Image of card.",
-                        "required": true
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description",
+                                    "first_edition",
+                                    "serial_code",
+                                    "type",
+                                    "amount",
+                                    "subtype_id",
+                                    "image_id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "description": "Card's ID",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "name": {
+                                        "description": "Card's name",
+                                        "type": "string",
+                                        "format": ""
+                                    },
+                                    "description": {
+                                        "description": "Card's description",
+                                        "type": "string",
+                                        "format": ""
+                                    },
+                                    "first_edition": {
+                                        "description": "Is first edition",
+                                        "type": "boolean",
+                                        "format": ""
+                                    },
+                                    "serial_code": {
+                                        "description": "Card's serial code",
+                                        "type": "string",
+                                        "format": ""
+                                    },
+                                    "type": {
+                                        "description": "Card's type",
+                                        "type": "string",
+                                        "format": "",
+                                        "enum": [
+                                            "Monster",
+                                            "Magic",
+                                            "Trap"
+                                        ]
+                                    },
+                                    "attack": {
+                                        "description": "Attack of card",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "defense": {
+                                        "description": "Defense of card",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "star": {
+                                        "description": "Quality of card",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "amount": {
+                                        "description": "Amount of card",
+                                        "type": "number",
+                                        "format": ""
+                                    },
+                                    "subtype_id": {
+                                        "description": "Card's subtype",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "image_id": {
+                                        "description": "Card's image",
+                                        "type": "integer",
+                                        "format": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "201": {
-                        "description": "Card created."
+                        "description": "Card created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request."
-                    },
-                    "500": {
-                        "description": "Internal server error."
-                    }
-                }
-            },
-            "patch": {
-                "tags": [
-                    "Cards"
-                ],
-                "summary": "Update a specific card.",
-                "operationId": "card-update",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "Card's name."
-                    },
-                    {
-                        "name": "description",
-                        "in": "query",
-                        "description": "Card's description."
-                    },
-                    {
-                        "name": "first_edition",
-                        "in": "query",
-                        "description": "Is first edition card."
-                    },
-                    {
-                        "name": "serial_code",
-                        "in": "query",
-                        "description": "Card's serial code."
-                    },
-                    {
-                        "name": "type",
-                        "in": "query",
-                        "description": "Type of card (Monster, Magic, Trap)."
-                    },
-                    {
-                        "name": "attack",
-                        "in": "query",
-                        "description": "Points of attack."
-                    },
-                    {
-                        "name": "defense",
-                        "in": "query",
-                        "description": "Points of defense."
-                    },
-                    {
-                        "name": "star",
-                        "in": "query",
-                        "description": "Card's quality."
-                    },
-                    {
-                        "name": "amount",
-                        "in": "query",
-                        "description": "Price of card."
-                    },
-                    {
-                        "name": "subtype_id",
-                        "in": "query",
-                        "description": "Subtype of card."
-                    },
-                    {
-                        "name": "image_id",
-                        "in": "query",
-                        "description": "Image of card."
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Card created."
-                    },
-                    "400": {
-                        "description": "Bad request."
-                    },
-                    "404": {
-                        "description": "Not found."
                     },
                     "500": {
                         "description": "Internal server error."
@@ -204,7 +164,126 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Card obteined."
+                        "description": "Card obteined.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Cards"
+                ],
+                "summary": "Update a specific card.",
+                "operationId": "card-update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Card ID.",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "description": "Card's ID",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "name": {
+                                        "description": "Card's name",
+                                        "type": "string",
+                                        "format": ""
+                                    },
+                                    "description": {
+                                        "description": "Card's description",
+                                        "type": "string",
+                                        "format": ""
+                                    },
+                                    "first_edition": {
+                                        "description": "Is first edition",
+                                        "type": "boolean",
+                                        "format": ""
+                                    },
+                                    "serial_code": {
+                                        "description": "Card's serial code",
+                                        "type": "string",
+                                        "format": ""
+                                    },
+                                    "type": {
+                                        "description": "Card's type",
+                                        "type": "string",
+                                        "format": "",
+                                        "enum": [
+                                            "Monster",
+                                            "Magic",
+                                            "Trap"
+                                        ]
+                                    },
+                                    "attack": {
+                                        "description": "Attack of card",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "defense": {
+                                        "description": "Defense of card",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "star": {
+                                        "description": "Quality of card",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "amount": {
+                                        "description": "Amount of card",
+                                        "type": "number",
+                                        "format": ""
+                                    },
+                                    "subtype_id": {
+                                        "description": "Card's subtype",
+                                        "type": "integer",
+                                        "format": ""
+                                    },
+                                    "image_id": {
+                                        "description": "Card's image",
+                                        "type": "integer",
+                                        "format": ""
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Card updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request."
                     },
                     "404": {
                         "description": "Not found."
@@ -249,7 +328,17 @@
                 "operationId": "image-index",
                 "responses": {
                     "200": {
-                        "description": "Get a images collection"
+                        "description": "Get an image collection",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageResource"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -259,29 +348,44 @@
                 ],
                 "summary": "Create an image.",
                 "operationId": "image-store",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "File name.",
-                        "required": true
-                    },
-                    {
-                        "name": "extension",
-                        "in": "query",
-                        "description": "File extension.",
-                        "required": true
-                    },
-                    {
-                        "name": "file",
-                        "in": "query",
-                        "description": "Base 64 code.",
-                        "required": true
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "extension",
+                                    "file"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "File name",
+                                        "type": "string"
+                                    },
+                                    "extension": {
+                                        "description": "File extension",
+                                        "type": "string"
+                                    },
+                                    "file": {
+                                        "description": "Base64 code",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "201": {
-                        "description": "Image created."
+                        "description": "Image created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request."
@@ -309,7 +413,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Image obteined."
+                        "description": "Image obteined.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageResource"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Not found."
@@ -350,32 +461,39 @@
                 ],
                 "summary": "Create an image.",
                 "operationId": "image-update",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Image ID.",
-                        "required": true
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "File name."
-                    },
-                    {
-                        "name": "extension",
-                        "in": "query",
-                        "description": "File extension."
-                    },
-                    {
-                        "name": "file",
-                        "in": "query",
-                        "description": "Base 64 code."
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "File name",
+                                        "type": "string"
+                                    },
+                                    "extension": {
+                                        "description": "File extension",
+                                        "type": "string"
+                                    },
+                                    "file": {
+                                        "description": "Base64 code",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Image updated."
+                        "description": "Image updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request."
@@ -398,7 +516,17 @@
                 "operationId": "subtype-index",
                 "responses": {
                     "200": {
-                        "description": "Get a subtypes collection"
+                        "description": "Get a subtypes collection",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SubtypeResource"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -408,17 +536,34 @@
                 ],
                 "summary": "Create a subtype.",
                 "operationId": "subtype-store",
-                "parameters": [
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "Subtype name.",
-                        "required": true
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Subtype's name",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "201": {
-                        "description": "Subtype created."
+                        "description": "Subtype created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubtypeResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request."
@@ -446,7 +591,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Subtype obteined."
+                        "description": "Subtype obteined.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubtypeResource"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Not found."
@@ -468,16 +620,33 @@
                         "in": "path",
                         "description": "Subtype ID.",
                         "required": true
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "description": "New subtype name."
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Subtype's name",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Subtype updated."
+                        "description": "Subtype updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubtypeResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request."
@@ -488,6 +657,154 @@
                     "500": {
                         "description": "Internal server error."
                     }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CardResource": {
+                "title": "Card",
+                "description": "Card information",
+                "properties": {
+                    "id": {
+                        "description": "Card's ID",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "name": {
+                        "description": "Card's name",
+                        "type": "string",
+                        "format": ""
+                    },
+                    "description": {
+                        "description": "Card's description",
+                        "type": "string",
+                        "format": ""
+                    },
+                    "first_edition": {
+                        "description": "Is first edition",
+                        "type": "boolean",
+                        "format": ""
+                    },
+                    "serial_code": {
+                        "description": "Card's serial code",
+                        "type": "string",
+                        "format": ""
+                    },
+                    "type": {
+                        "description": "Card's type",
+                        "type": "string",
+                        "format": "",
+                        "enum": [
+                            "Monster",
+                            "Magic",
+                            "Trap"
+                        ]
+                    },
+                    "attack": {
+                        "description": "Attack of card",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "defense": {
+                        "description": "Defense of card",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "star": {
+                        "description": "Quality of card",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "amount": {
+                        "description": "Amount of card",
+                        "type": "number",
+                        "format": ""
+                    },
+                    "subtype": {
+                        "$ref": "#/components/schemas/SubtypeResource"
+                    },
+                    "image": {
+                        "$ref": "#/components/schemas/ImageResource"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": 1,
+                    "name": "Dark Magician",
+                    "description": "Desciption of Dark Magician",
+                    "first_edition": true,
+                    "serial_code": 190124914710293,
+                    "type": "Monster",
+                    "attack": 2500,
+                    "defense": 2000,
+                    "star": 9,
+                    "amount": 1500,
+                    "subtype": {
+                        "id": 1,
+                        "name": "Normal Monster"
+                    },
+                    "image_id": {
+                        "id": 1,
+                        "name": "Dark Margician",
+                        "extension": "jpg",
+                        "file": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQ"
+                    }
+                }
+            },
+            "ImageResource": {
+                "title": "Image",
+                "description": "Card's image",
+                "properties": {
+                    "id": {
+                        "description": "Image's ID",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "name": {
+                        "description": "Fila name",
+                        "type": "string",
+                        "format": ""
+                    },
+                    "extension": {
+                        "description": "File's extension",
+                        "type": "string",
+                        "format": ""
+                    },
+                    "file": {
+                        "description": "Base 64 code",
+                        "type": "string",
+                        "format": ""
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": 1,
+                    "name": "Dark Margician",
+                    "extension": "jpg",
+                    "file": "TWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQTWFuIGlzIGRpc3Rpbmd1aXNoZWQ"
+                }
+            },
+            "SubtypeResource": {
+                "title": "Subtype",
+                "description": "Card's subtype",
+                "properties": {
+                    "id": {
+                        "description": "Subtype's ID",
+                        "type": "integer",
+                        "format": ""
+                    },
+                    "name": {
+                        "description": "Subtype's name",
+                        "type": "string",
+                        "format": ""
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "id": 1,
+                    "name": "Normal Monster"
                 }
             }
         }

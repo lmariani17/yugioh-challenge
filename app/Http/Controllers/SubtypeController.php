@@ -32,7 +32,8 @@ class SubtypeController extends Controller
      *     operationId="subtype-index",
      *     @OA\Response(
      *         response=200,
-     *         description="Get a subtypes collection"
+     *         description="Get a subtypes collection",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/SubtypeResource"))
      *     )
      * )
      */
@@ -48,23 +49,27 @@ class SubtypeController extends Controller
      *     path="/api/subtypes",
      *     tags={"Subtypes"},
      *     operationId="subtype-store",
-     *     @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="Subtype name.",
-     *          required=true,
-     *      ),
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                  required={"name"},
+     *                  @OA\Property(type="string", property="name", description="Subtype's name")
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Subtype created."
+     *         description="Subtype created.",
+     *         @OA\JsonContent(ref="#/components/schemas/SubtypeResource")
      *     ),
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=400,
-     *         description="Bad request."
+     *         description="Bad request.",
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Internal server error."
+     *         description="Internal server error.",
      *     )
      * )
      */
@@ -102,17 +107,18 @@ class SubtypeController extends Controller
      *          description="Subtype ID.",
      *          required=true
      *      ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Subtype obteined."
-     *     ),
      *      @OA\Response(
+     *         response=200,
+     *         description="Subtype obteined.",
+     *         @OA\JsonContent(ref="#/components/schemas/SubtypeResource")
+     *     ),
+     *     @OA\Response(
      *         response=404,
-     *         description="Not found."
+     *         description="Not found.",
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Internal server error."
+     *         description="Internal server error.",
      *     )
      * )
      */
@@ -142,26 +148,30 @@ class SubtypeController extends Controller
      *          description="Subtype ID.",
      *          required=true
      *      ),
-     *     @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="New subtype name."
-     *      ),
-     *     @OA\Response(
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                  @OA\Property(type="string", property="name", description="Subtype's name")
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
      *         response=200,
-     *         description="Subtype updated."
+     *         description="Subtype updated.",
+     *         @OA\JsonContent(ref="#/components/schemas/SubtypeResource")
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="Bad request."
+     *         description="Bad request.",
      *     ),
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=404,
-     *         description="Not found."
+     *         description="Not found.",
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Internal server error."
+     *         description="Internal server error.",
      *     )
      * )
      */

@@ -35,7 +35,8 @@ class CardController extends Controller
      *     operationId="card-index",
      *     @OA\Response(
      *         response=200,
-     *         description="Get a cards collection"
+     *         description="Get a cards collection",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CardResource"))
      *     )
      * )
      */
@@ -51,72 +52,30 @@ class CardController extends Controller
      *     path="/api/cards",
      *     tags={"Cards"},
      *     operationId="card-store",
-     *     @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="Card name.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="description",
-     *          in="query",
-     *          description="Card description.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="first_edition",
-     *          in="query",
-     *          description="Is first edition card.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="serial_code",
-     *          in="query",
-     *          description="Card's serial code.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="type",
-     *          in="query",
-     *          description="Type of card (Monster, Magic, Trap).",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="attack",
-     *          in="query",
-     *          description="Points of attack.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="defense",
-     *          in="query",
-     *          description="Points of defense.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="star",
-     *          in="query",
-     *          description="Card's quality.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="amount",
-     *          in="query",
-     *          description="Price of card.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="subtype_id",
-     *          in="query",
-     *          description="Subtype of card.",
-     *          required=true,
-     *      ),
-     *     @OA\Parameter(
-     *          name="image_id",
-     *          in="query",
-     *          description="Image of card.",
-     *          required=true,
-     *      ),
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                  required={"name", "description", "first_edition", "serial_code", "type", "amount", "subtype_id", "image_id"},
+     *                  @OA\Property(type="integer", property="id", description="Card's ID", format=""),
+     *                  @OA\Property(type="string", property="name", description="Card's name", format=""),
+     *                  @OA\Property(type="string", property="description", description="Card's description", format=""),
+     *                  @OA\Property(type="boolean", property="first_edition", description="Is first edition", format=""),
+     *                  @OA\Property(type="string", property="serial_code", description="Card's serial code", format=""),
+     *                  @OA\Property(type="string", property="type", description="Card's type", format="", enum={"Monster", "Magic", "Trap"}),
+     *                  @OA\Property(type="integer", property="attack", description="Attack of card", format=""),
+     *                  @OA\Property(type="integer", property="defense", description="Defense of card", format=""),
+     *                  @OA\Property(type="integer", property="star", description="Quality of card", format=""),
+     *                  @OA\Property(type="number", property="amount", description="Amount of card", format=""),
+     *                  @OA\Property(type="integer", property="subtype_id", description="Card's subtype", format=""),
+     *                  @OA\Property(type="integer",property="image_id", description="Card's image", format="")
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Card created."
+     *         description="Card created.",
+     *         @OA\JsonContent(ref="#/components/schemas/CardResource")
      *     ),
      *      @OA\Response(
      *         response=400,
@@ -174,7 +133,8 @@ class CardController extends Controller
      *      ),
      *     @OA\Response(
      *         response=200,
-     *         description="Card obteined."
+     *         description="Card obteined.",
+     *         @OA\JsonContent(ref="#/components/schemas/CardResource")
      *     ),
      *      @OA\Response(
      *         response=404,
@@ -203,79 +163,50 @@ class CardController extends Controller
      * Update a specific card.
      *
      * @OA\Patch (
-     *     path="/api/cards",
+     *     path="/api/cards/{id}",
      *     tags={"Cards"},
      *     operationId="card-update",
      *     @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="Card's name.",
+     *          name="id",
+     *          in="path",
+     *          description="Card ID.",
+     *          required=true
      *      ),
-     *     @OA\Parameter(
-     *          name="description",
-     *          in="query",
-     *          description="Card's description.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="first_edition",
-     *          in="query",
-     *          description="Is first edition card.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="serial_code",
-     *          in="query",
-     *          description="Card's serial code.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="type",
-     *          in="query",
-     *          description="Type of card (Monster, Magic, Trap).",
-     *      ),
-     *     @OA\Parameter(
-     *          name="attack",
-     *          in="query",
-     *          description="Points of attack.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="defense",
-     *          in="query",
-     *          description="Points of defense.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="star",
-     *          in="query",
-     *          description="Card's quality.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="amount",
-     *          in="query",
-     *          description="Price of card.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="subtype_id",
-     *          in="query",
-     *          description="Subtype of card.",
-     *      ),
-     *     @OA\Parameter(
-     *          name="image_id",
-     *          in="query",
-     *          description="Image of card.",
-     *      ),
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                  @OA\Property(type="integer", property="id", description="Card's ID", format=""),
+     *                  @OA\Property(type="string", property="name", description="Card's name", format=""),
+     *                  @OA\Property(type="string", property="description", description="Card's description", format=""),
+     *                  @OA\Property(type="boolean", property="first_edition", description="Is first edition", format=""),
+     *                  @OA\Property(type="string", property="serial_code", description="Card's serial code", format=""),
+     *                  @OA\Property(type="string", property="type", description="Card's type", format="", enum={"Monster", "Magic", "Trap"}),
+     *                  @OA\Property(type="integer", property="attack", description="Attack of card", format=""),
+     *                  @OA\Property(type="integer", property="defense", description="Defense of card", format=""),
+     *                  @OA\Property(type="integer", property="star", description="Quality of card", format=""),
+     *                  @OA\Property(type="number", property="amount", description="Amount of card", format=""),
+     *                  @OA\Property(type="integer", property="subtype_id", description="Card's subtype", format=""),
+     *                  @OA\Property(type="integer",property="image_id", description="Card's image", format="")
+     *             )
+     *         )
+     *     ),
      *     @OA\Response(
-     *         response=201,
-     *         description="Card created."
+     *         response=200,
+     *         description="Card updated.",
+     *         @OA\JsonContent(ref="#/components/schemas/CardResource")
      *     ),
      *      @OA\Response(
      *         response=400,
-     *         description="Bad request."
+     *         description="Bad request.",
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Not found."
+     *         description="Not found.",
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Internal server error."
+     *         description="Internal server error.",
      *     )
      * )
      */
@@ -331,7 +262,7 @@ class CardController extends Controller
      *     ),
      *     @OA\Response(
      *         response=500,
-     *         description="Internal server error."
+     *         description="Internal server error.",
      *     )
      * )
      */
